@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 
 public class ReinforceGameInfo {
 	private String userName;
-	private Color backgroundColor;
+	private Color backgroundColor = Color.black;
 	private int money;
 	private int HP;
 	private int damage;
@@ -25,7 +25,6 @@ public class ReinforceGameInfo {
 		critical = 5;
 		criticalDamage = 10;
 		upgradeFailed = 0;
-		backgroundColor = Color.black;
 		equipedWeapon = null;
 		giveItem("Common", "기본단검", 0, 1000);
 		giveItem("Common", "기본장검", 0, 1000);

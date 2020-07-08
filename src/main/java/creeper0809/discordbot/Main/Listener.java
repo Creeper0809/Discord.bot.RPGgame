@@ -54,7 +54,7 @@ public class Listener extends ListenerAdapter {
 					}
 					return;
 				} else if (args[1].equalsIgnoreCase("도움")) {
-					sendEmbed(new embedBuilder().myGameInfo(RFIF, args[1]));
+					sendEmbed(new embedBuilder().showHelpBox());
 					return;
 				}
 				if (RFIF == null) {// 이걸 기준으로 가입해야만 쓸수 있는 명령어들.
@@ -95,24 +95,25 @@ public class Listener extends ListenerAdapter {
 							return;
 						}
 						if (weapon == null) {
-							sendMessage("강화 품목중에서 골라주세요.");
+							sendMessage("뒤 강화수");
 							return;
 						}
 						if (RFIF.getMoney() >= weapon.getCost()) {
 							isDoing.replace(e.getChannel().getName(), 1);
-							String description = weapon.getCost() + "원 소모\n" + "성공확률:"
-									+ RFG.sucessPercentage[weapon.getUpgraded()] + "%\n" + "실패확률:"
+							String description = "강화시 " + (weapon.getUpgraded() + 1) + "성이 됩니다.\n" + weapon.getCost()
+									+ "원 소모\n" + "성공확률:" + RFG.sucessPercentage[weapon.getUpgraded()] + "%\n" + "실패확률:"
 									+ (100 - (RFG.destroyPercentage[weapon.getUpgraded()]
 											+ RFG.sucessPercentage[weapon.getUpgraded()]))
 									+ "%\n" + "파괴확률:" + RFG.destroyPercentage[weapon.getUpgraded()] + "%";
-							ch.sendMessage(new embedBuilder().showQuestionBox("강화 하시겠습니까?", description).build())
+							ch.sendMessage(new embedBuilder()
+									.showQuestionBox(weapon.getUpgraded() + "성 입니다 강화 하시겠습니까?", description).build())
 									.queue(message -> {
 										message.addReaction("✔️").queue();
 										message.addReaction("❌").queue();
 
-										for (int i = 5; i > 0; i--) {
+										for (int i = 15; i > -1; i--) {
 											message.editMessage(new embedBuilder()
-													.showQuestionBox("강화 하시겠습니까?", description + "\n" + i + "초 후 삭제")
+													.showQuestionBox(weapon.getUpgraded() + "성 입니다 강화 하시겠습니까?", description + "\n" + i + "초 후 삭제")
 													.build()).queueAfter(1, TimeUnit.SECONDS);
 											try {
 												TimeUnit.SECONDS.sleep(1);
@@ -139,20 +140,23 @@ public class Listener extends ListenerAdapter {
 					} else if (args[1].equalsIgnoreCase("내무기")) {
 						sendEmbed(new embedBuilder().showWeaponInfo(RFIF, weapon));
 					} else if (args[1].equalsIgnoreCase("착용")) {
-						if(weapon.equals(RFIF.getequipedWeapon())) {
+						if (weapon == null) {
+							sendMessage("없는 장비 입니다. 뒤 강화수를 입력하셨는지 무기이름은 제대로 됐는지 확인해주세요.");
+						} else if (weapon.equals(RFIF.getequipedWeapon())) {
 							sendMessage("이미 착용중인 장비 입니다.");
-						}
-						else {
+						} else {
 							RFIF.equipWeapon(weapon);
-							sendMessage("장비 " + weapon.getProperName()+" 착용되었습니다.");
+							sendMessage("장비 " + weapon.getProperName() + " 착용되었습니다.");
 						}
-					}else if (args[1].equalsIgnoreCase("착용해제")) {
-						if(RFIF.getequipedWeapon() == null) {
+					} else if (args[1].equalsIgnoreCase("착용해제")) {
+						if (weapon == null) {
+							sendMessage("없는 장비 입니다. 뒤 강화수를 입력하셨는지 무기이름은 제대로 됐는지 확인해주세요.");
+						} else if (RFIF.getequipedWeapon() == null) {
 							sendMessage("장착중인 장비가 없습니다.");
-						}
-						else {
-							RFIF.disarmWeapon(weapon);;
-							sendMessage("장비 " + weapon.getProperName()+" 착용해제되었습니다.");
+						} else {
+							RFIF.disarmWeapon(weapon);
+							;
+							sendMessage("장비 " + weapon.getProperName() + " 착용해제되었습니다.");
 						}
 					}
 				}
