@@ -28,6 +28,7 @@ public class ReinForceGame {
 		RFIF.setMoney(RFIF.getMoney() - weaponinfo.getCost());
 		if(RFIF.getUpgradeFailed() == 2) {
 			weaponinfo.setUpgraded(weaponinfo.getUpgraded() + 1);
+			weaponinfo.setProperName(weaponinfo.getProperName() + " +"+weaponinfo.getUpgraded());
 			RFIF.setUpgradeFailed(0);
 			return "연속 2번 강화 수치가 하락하여 100%성공 하였습니다";
 		}
@@ -35,6 +36,7 @@ public class ReinForceGame {
 		int num = r.nextInt(100) + 1;
 		if (num <= sucessPercentage[weaponinfo.getUpgraded()]) {
 			weaponinfo.setUpgraded(weaponinfo.getUpgraded() + 1);
+			weaponinfo.setProperName(weaponinfo.getProperName() + " +"+weaponinfo.getUpgraded());
 			RFIF.setUpgradeFailed(0);
 			return "성공!";
 		} else {
@@ -49,6 +51,7 @@ public class ReinForceGame {
 				}
 				weaponinfo.setUpgraded(weaponinfo.getUpgraded() - 1);
 				RFIF.setUpgradeFailed(RFIF.getUpgradeFailed()+1);
+				weaponinfo.setProperName(weaponinfo.getProperName() + " +"+weaponinfo.getUpgraded());
 				return "강화 수치 하락...";
 			}
 		}

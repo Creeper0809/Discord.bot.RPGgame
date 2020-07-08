@@ -7,21 +7,14 @@ import net.dv8tion.jda.api.EmbedBuilder;
 
 public class ReinforceGameInfo {
 	private String userName;
+	private Color backgroundColor;
 	private int money;
 	private int HP;
 	private int damage;
 	private int critical;
 	private int criticalDamage;
 	private int upgradeFailed;
-
-	public int getUpgradeFailed() {
-		return upgradeFailed;
-	}
-
-	public void setUpgradeFailed(int upgradeFailed) {
-		this.upgradeFailed = upgradeFailed;
-	}
-
+	private WeaponInfo equipedWeapon;
 	private ArrayList<WeaponInfo> inventory = new ArrayList<WeaponInfo>();
 
 	public ReinforceGameInfo(String userName) {
@@ -32,10 +25,50 @@ public class ReinforceGameInfo {
 		critical = 5;
 		criticalDamage = 10;
 		upgradeFailed = 0;
+		backgroundColor = Color.black;
+		equipedWeapon = null;
 		giveItem("Common", "기본단검", 0, 1000);
 		giveItem("Common", "기본장검", 0, 1000);
 		giveItem("Common", "기본활", 0, 1000);
 		giveItem("Common", "기본수류탄", 0, 1000);
+	}
+	public void equipWeapon(WeaponInfo weaponinfo) {
+		this.equipedWeapon = weaponinfo;
+		this.HP +=weaponinfo.getHp();
+		this.damage += weaponinfo.getDamage();
+		this.critical += weaponinfo.getCriticalPer();
+		this.criticalDamage +=weaponinfo.getCriticalDamage();
+	}
+	public void disarmWeapon(WeaponInfo weaponinfo) {
+		this.equipedWeapon = null;
+		this.HP -=weaponinfo.getHp();
+		this.damage -= weaponinfo.getDamage();
+		this.critical -= weaponinfo.getCriticalPer();
+		this.criticalDamage -=weaponinfo.getCriticalDamage();
+	}
+	
+	public WeaponInfo getequipedWeapon() {
+		return equipedWeapon;
+	}
+
+	public void setequipedWeapon(WeaponInfo weaponInfo) {
+		this.equipedWeapon = weaponInfo;
+	}
+
+	public int getUpgradeFailed() {
+		return upgradeFailed;
+	}
+
+	public void setUpgradeFailed(int upgradeFailed) {
+		this.upgradeFailed = upgradeFailed;
+	}
+
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 
 	public int getHP() {
@@ -77,9 +110,11 @@ public class ReinforceGameInfo {
 	public void giveItem(String quality, String weaponName, int upgraded, int cost) {
 		inventory.add(new WeaponInfo(quality, weaponName, upgraded, cost));
 	}
+
 	public void removeItem(WeaponInfo weaponName) {
 		inventory.remove(weaponName);
 	}
+
 	public ArrayList<WeaponInfo> getInventory() {
 		return inventory;
 	}
@@ -102,7 +137,7 @@ public class ReinforceGameInfo {
 
 	public WeaponInfo getWeapon(String weaponName) {
 		for (int i = 0; i < inventory.size(); i++) {
-			if (inventory.get(i).getWeaponName().equalsIgnoreCase(weaponName)) {
+			if (inventory.get(i).getProperName().equalsIgnoreCase(weaponName)) {
 				return inventory.get(i);
 			}
 		}
