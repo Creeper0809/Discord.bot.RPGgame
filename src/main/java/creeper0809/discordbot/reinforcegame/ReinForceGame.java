@@ -1,12 +1,12 @@
-package creeper0809.discordbot.ReinForceGame;
+package creeper0809.discordbot.reinforcegame;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import org.omg.PortableInterceptor.SUCCESSFUL;
 
-import creeper0809.discordbot.GameInfo.ReinforceGameInfo;
-import creeper0809.discordbot.GameInfo.WeaponInfo;
+import creeper0809.discordbot.gameinfo.ReinforceGameInfo;
+import creeper0809.discordbot.gameinfo.WeaponInfo;
 
 public class ReinForceGame {
 

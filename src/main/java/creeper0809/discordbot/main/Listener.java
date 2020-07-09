@@ -1,4 +1,4 @@
-package creeper0809.discordbot.Main;
+package creeper0809.discordbot.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.map.HashedMap;
 
-import creeper0809.discordbot.GameInfo.ReinforceGameInfo;
-import creeper0809.discordbot.GameInfo.WeaponInfo;
-import creeper0809.discordbot.ReinForceGame.ReinForceGame;
+import creeper0809.discordbot.gameinfo.ReinforceGameInfo;
+import creeper0809.discordbot.gameinfo.WeaponInfo;
+import creeper0809.discordbot.reinforcegame.ReinForceGame;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;

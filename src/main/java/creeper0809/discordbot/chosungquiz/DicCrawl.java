@@ -1,4 +1,4 @@
-package creeper0809.discordbot.ChoSungQuiz;
+package creeper0809.discordbot.chosungquiz;
 
 import java.util.ArrayList;
 import java.util.Arrays;

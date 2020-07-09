@@ -3,7 +3,7 @@ package creeper0809.discordbot.RPG;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import creeper0809.discordbot.GameInfo.ReinforceGameInfo;
+import creeper0809.discordbot.gameinfo.ReinforceGameInfo;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;

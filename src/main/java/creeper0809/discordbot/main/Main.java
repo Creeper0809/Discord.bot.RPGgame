@@ -1,4 +1,4 @@
-package creeper0809.discordbot.Main;
+package creeper0809.discordbot.main;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package creeper0809.discordbot.GameInfo;
+package creeper0809.discordbot.gameinfo;
 
 public class WeaponInfo {
 	
