@@ -124,8 +124,6 @@ public class Listener extends ListenerAdapter {
 										}
 										message.delete().queue();
 										isDoing.replace(e.getChannel().getName(), 0);
-										System.out.println(
-												e.getChannel().getName() + "," + IsDoing(e.getChannel().getName()));
 									});
 						} else {
 							sendMessage("강화에 필요한 돈이 부족합니다.");
@@ -175,7 +173,6 @@ public class Listener extends ListenerAdapter {
 	}
 
 	public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent e) {
-		System.out.println(!e.getChannel().retrieveMessageById(e.getMessageId()).complete().getAuthor().isBot());
 		if (!e.getChannel().retrieveMessageById(e.getMessageId()).complete().getAuthor().isBot()) {
 			return;
 		}
@@ -183,20 +180,17 @@ public class Listener extends ListenerAdapter {
 //		for (int i = 0; i < emotions.size(); i++) {
 //			emotionsName.add(emotions.get(i).getName());
 //		}
-//		System.out.println("✔️," + emotionsName.get(0));
 //		if (emotionsName.contains("✔️") && emotionsName.contains("❌")) {
 		if (e.getReactionEmote().getName().equals("✔️") && !e.getMember().getUser().equals(e.getJDA().getSelfUser())) {
 			if (e.getMember().getUser().equals(AuthorName)) {
 				sendMessage(RFG.upgradeWeapon(weapon));
 				isDoing.replace(e.getChannel().getName(), 0);
-				System.out.println(e.getChannel().getName() + "," + IsDoing(e.getChannel().getName()));
 				e.getChannel().retrieveMessageById(e.getMessageId()).complete().delete().queue();
 			}
 		} else if (e.getReactionEmote().getName().equals("❌")
 				&& !e.getMember().getUser().equals(e.getJDA().getSelfUser())) {
 			if (e.getMember().getUser().equals(AuthorName)) {
 				isDoing.replace(e.getChannel().getName(), 0);
-				System.out.println(e.getChannel().getName() + "," + IsDoing(e.getChannel().getName()));
 				sendMessage("강화를 취소 하셨습니다");
 				e.getChannel().retrieveMessageById(e.getMessageId()).complete().delete().queue();
 			}

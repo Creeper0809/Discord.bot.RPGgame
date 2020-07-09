@@ -24,7 +24,7 @@ public class embedBuilder {
 						+ RFIF.getDamage() + "\n" + "`크리티컬확률`:" + RFIF.getCritical() + "%\n" + "`크리티컬데미지`:"
 						+ RFIF.getCriticalDamage() + "%\n" + "착용무기:" + RFIF.getequipedWeapon().getProperName());
 			}
-			return eb;
+			break;
 		case "무기목록":
 			StringBuilder description = new StringBuilder();
 			for (int i = 1; i < RFIF.getInventory().size() + 1; i++) {
@@ -37,11 +37,11 @@ public class embedBuilder {
 			}
 			eb.setTitle(RFIF.getUserName() + "님의 무기 목록", null);
 			eb.setDescription("**" + description + "**");
-			return eb;
+			break;
 		default:
-			return eb;
+			break;
 		}
-
+		return eb;
 	}
 
 	public EmbedBuilder showHelpBox() {
