@@ -1,16 +1,35 @@
 package creeper0809.discordbot.gameinfo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class WeaponInfo {
-	
+	@Getter
 	private String weaponName;
+	@Getter
+	@Setter
 	private String properName;
+	@Getter
 	private String quality;
+	@Getter
 	private int id;
+	@Getter
+	@Setter
 	private int upgraded;
+	@Getter
+	@Setter
 	private int cost;
+	@Getter
+	@Setter
 	private int hp;
+	@Getter
+	@Setter
 	private int damage;
+	@Getter
+	@Setter
 	private int criticalPer;
+	@Getter
+	@Setter
 	private int criticalDamage;
 
 	public WeaponInfo(String quality, String weaponname, int upgrade, int cost) {
@@ -23,86 +42,6 @@ public class WeaponInfo {
 		damage = 10;
 		criticalPer = 40;
 		criticalDamage = 30;
-	}
-
-	public String getProperName() {
-		return properName;
-	}
-
-	public void setProperName(String properName) {
-		this.properName = properName;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getHp() {
-		return hp;
-	}
-
-	public void setHp(int hp) {
-		this.hp = hp;
-	}
-
-	public int getDamage() {
-		return damage;
-	}
-
-	public void setDamage(int damage) {
-		this.damage = damage;
-	}
-
-	public int getCriticalPer() {
-		return criticalPer;
-	}
-
-	public void setCriticalPer(int criticalPer) {
-		this.criticalPer = criticalPer;
-	}
-
-	public int getCriticalDamage() {
-		return criticalDamage;
-	}
-
-	public void setCriticalDamage(int criticalDamage) {
-		this.criticalDamage = criticalDamage;
-	}
-
-	public String getQuality() {
-		return quality;
-	}
-
-	public void setQuality(String quality) {
-		this.quality = quality;
-	}
-
-	public String getWeaponName() {
-		return weaponName;
-	}
-
-	public void setWeaponName(String weaponName) {
-		this.weaponName = weaponName;
-	}
-
-	public int getUpgraded() {
-		return upgraded;
-	}
-
-	public void setUpgraded(int upgraded) {
-		this.upgraded = upgraded;
-	}
-
-	public int getCost() {
-		return cost;
-	}
-
-	public void setCost(int cost) {
-		this.cost = cost;
 	}
 
 }

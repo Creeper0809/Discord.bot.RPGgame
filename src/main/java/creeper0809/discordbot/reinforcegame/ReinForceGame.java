@@ -3,32 +3,28 @@ package creeper0809.discordbot.reinforcegame;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.omg.PortableInterceptor.SUCCESSFUL;
-
-import creeper0809.discordbot.gameinfo.ReinforceGameInfo;
+import creeper0809.discordbot.gameinfo.StaticFile;
+import creeper0809.discordbot.gameinfo.UserInfo;
 import creeper0809.discordbot.gameinfo.WeaponInfo;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 
 public class ReinForceGame {
 
-	ArrayList<ReinforceGameInfo> reinforceGame = new ArrayList<ReinforceGameInfo>();
-	ReinforceGameInfo RFIF;
+	UserInfo RFIF;
+	User ReinforceName;
+	
 	public int[] sucessPercentage = {95, 90, 85, 85, 80, 75, 70, 65, 60, 55, 45, 35, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
 			3, 2, 1 };
 	public int[] destroyPercentage = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 7, 7, 19, 29, 40 };
 
-	public void addAccount(String name) {
-		reinforceGame.add(new ReinforceGameInfo(name));
-	}
 
-	public void deleteAccount(String name) {
-		reinforceGame.remove(findRFinfo(name));
-	}
 
 	public String upgradeWeapon(WeaponInfo weaponinfo) {
 		RFIF.setMoney(RFIF.getMoney() - weaponinfo.getCost());
 		if(RFIF.getUpgradeFailed() == 2) {
 			weaponinfo.setUpgraded(weaponinfo.getUpgraded() + 1);
-			weaponinfo.setProperName(weaponinfo.getProperName() + " +"+weaponinfo.getUpgraded());
+			weaponinfo.setProperName(weaponinfo.getWeaponName() + " +"+weaponinfo.getUpgraded());
 			RFIF.setUpgradeFailed(0);
 			return "연속 2번 강화 수치가 하락하여 100%성공 하였습니다";
 		}
@@ -36,7 +32,8 @@ public class ReinForceGame {
 		int num = r.nextInt(100) + 1;
 		if (num <= sucessPercentage[weaponinfo.getUpgraded()]) {
 			weaponinfo.setUpgraded(weaponinfo.getUpgraded() + 1);
-			weaponinfo.setProperName(weaponinfo.getProperName() + " +"+weaponinfo.getUpgraded());
+			weaponinfo.setProperName(weaponinfo.getWeaponName() + " +"+weaponinfo.getUpgraded());
+			System.out.println(weaponinfo.getProperName());
 			RFIF.setUpgradeFailed(0);
 			return "성공!";
 		} else {
@@ -51,10 +48,17 @@ public class ReinForceGame {
 				}
 				weaponinfo.setUpgraded(weaponinfo.getUpgraded() - 1);
 				RFIF.setUpgradeFailed(RFIF.getUpgradeFailed()+1);
-				weaponinfo.setProperName(weaponinfo.getProperName() + " +"+weaponinfo.getUpgraded());
+				weaponinfo.setProperName(weaponinfo.getWeaponName() + " +"+weaponinfo.getUpgraded());
 				return "강화 수치 하락...";
 			}
 		}
+	}
+	public User getReinforceName() {
+		return ReinforceName;
+	}
+
+	public void setReinforceName(User reinforceName) {
+		ReinforceName = reinforceName;
 	}
 
 	public void sellOrDestroy(WeaponInfo weapon) {
@@ -62,19 +66,8 @@ public class ReinForceGame {
 		RFIF.getInventory().remove(weapon);
 	}
 
-	public ReinforceGameInfo getRFIF() {
+	public UserInfo addInfo(String name) {
+		RFIF = StaticFile.gameSystemInfo.findUser(name);
 		return RFIF;
-	}
-
-	public void addInfo(String name) {
-		RFIF = findRFinfo(name);
-	}
-
-	public ReinforceGameInfo findRFinfo(String username) {
-		for (int i = 0; i < reinforceGame.size(); i++) {
-			if (reinforceGame.get(i).getUserName().equals(username))
-				return reinforceGame.get(i);
-		}
-		return null;
 	}
 }

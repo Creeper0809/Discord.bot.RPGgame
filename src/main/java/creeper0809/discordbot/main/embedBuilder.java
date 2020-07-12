@@ -2,18 +2,18 @@ package creeper0809.discordbot.main;
 
 import java.awt.Color;
 
-import creeper0809.discordbot.gameinfo.ReinforceGameInfo;
+import creeper0809.discordbot.gameinfo.UserInfo;
 import creeper0809.discordbot.gameinfo.WeaponInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 public class embedBuilder {
 	private EmbedBuilder eb = new EmbedBuilder();
 
-	public EmbedBuilder myGameInfo(ReinforceGameInfo RFIF, String key) {
+	public EmbedBuilder myGameInfo(UserInfo RFIF, String key) {
 		eb.setColor(RFIF.getBackgroundColor());
 		switch (key) {
 		case "내정보":
-			if (RFIF.getequipedWeapon() == null) {
+			if (RFIF.getEquipedWeapon() == null) {
 				eb.setTitle(RFIF.getUserName() + "님의 정보", null);
 				eb.setDescription("`체력:`" + RFIF.getHP() + "\n" + "`돈`:" + RFIF.getMoney() + "원\n" + "`공격력`:"
 						+ RFIF.getDamage() + "\n" + "`크리티컬확률`:" + RFIF.getCritical() + "%\n" + "`크리티컬데미지`:"
@@ -22,10 +22,10 @@ public class embedBuilder {
 				eb.setTitle(RFIF.getUserName() + "님의 정보", null);
 				eb.setDescription("`체력:`" + RFIF.getHP() + "\n" + "`돈`:" + RFIF.getMoney() + "원\n" + "`공격력`:"
 						+ RFIF.getDamage() + "\n" + "`크리티컬확률`:" + RFIF.getCritical() + "%\n" + "`크리티컬데미지`:"
-						+ RFIF.getCriticalDamage() + "%\n" + "착용무기:" + RFIF.getequipedWeapon().getProperName());
+						+ RFIF.getCriticalDamage() + "%\n" + "착용무기:" + RFIF.getEquipedWeapon().getProperName());
 			}
 			break;
-		case "무기목록":
+		case "내무기":
 			StringBuilder description = new StringBuilder();
 			for (int i = 1; i < RFIF.getInventory().size() + 1; i++) {
 				if (RFIF.getInventory().get(i - 1).getUpgraded() == 0) {
@@ -62,7 +62,7 @@ public class embedBuilder {
 		return eb;
 	}
 
-	public EmbedBuilder showWeaponInfo(ReinforceGameInfo RFIF, WeaponInfo weapon) {
+	public EmbedBuilder showWeaponInfo(UserInfo RFIF, WeaponInfo weapon) {
 		eb.setTitle(RFIF.getUserName() + "님의 " + weapon.getProperName());
 		eb.setDescription("등급:" + weapon.getQuality());
 		eb.setColor(RFIF.getBackgroundColor());

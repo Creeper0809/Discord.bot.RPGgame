@@ -1,18 +1,16 @@
 package creeper0809.discordbot.main;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.map.HashedMap;
 
-import creeper0809.discordbot.gameinfo.ReinforceGameInfo;
+import creeper0809.discordbot.gameinfo.GameSystemInfo;
+import creeper0809.discordbot.gameinfo.StaticFile;
+import creeper0809.discordbot.gameinfo.UserInfo;
 import creeper0809.discordbot.gameinfo.WeaponInfo;
 import creeper0809.discordbot.reinforcegame.ReinForceGame;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -20,23 +18,22 @@ import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class Listener extends ListenerAdapter {
+	// .queue() 가장 기본적인 작업후 호출 방법 호출 할 대상이 없으면 오류 발생
+	// .submit() 더 이상 필요하지 않은 경우 실행을 취소해야 하는 경우
 
 	User AuthorName;
-	MessageChannel ch;
 	ReinForceGame RFG = new ReinForceGame();
 	WeaponInfo weapon;
 	HashedMap<String, Integer> isDoing = new HashedMap<String, Integer>();
-	ArrayList<String> emotionsName = new ArrayList<String>();
-	List<Emote> emotions;
-
+	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
-		ch = e.getChannel();
+		System.out.println(StaticFile.gameSystemInfo.findEmemy("쥐").getName());
 		String msg = e.getMessage().getContentRaw();
 		if (e.getAuthor().isBot())
 			return;
 		AuthorName = e.getAuthor();
-		RFG.addInfo(AuthorName.getName());
+		UserInfo RFIF = RFG.addInfo(AuthorName.getName());
 		if (msg.charAt(0) == ']') {
 			String[] args = msg.substring(1).split(" ");
 			if (args.length <= 0)
@@ -44,68 +41,70 @@ public class Listener extends ListenerAdapter {
 			else if (args[0].equalsIgnoreCase("강화")) {
 				if (args.length < 2)
 					return;
-				ReinforceGameInfo RFIF = RFG.getRFIF();
 				if (args[1].equalsIgnoreCase("가입")) {
 					if (RFIF == null) {
-						sendMessage("강화게임에 참여 하셨습니다. 탈퇴를 원하시면 강화 탈퇴 를입력해주십시오.");
-						RFG.addAccount(AuthorName.getName());
+						sendMessage(e.getChannel(), "강화게임에 참여 하셨습니다. 탈퇴를 원하시면 강화 탈퇴 를입력해주십시오.");
+						StaticFile.gameSystemInfo.addAccount(AuthorName.getName());
 					} else {
-						sendMessage("이미 가입되셨습니다.");
+						sendMessage(e.getChannel(), "이미 가입되셨습니다.");
 					}
 					return;
-				} else if (args[1].equalsIgnoreCase("도움")) {
-					sendEmbed(new embedBuilder().showHelpBox());
+				} else if (args[1].equalsIgnoreCase("도움") || args[1].equalsIgnoreCase("도움말")) {
+					sendEmbed(e.getChannel(), new embedBuilder().showHelpBox());
 					return;
 				}
 				if (RFIF == null) {// 이걸 기준으로 가입해야만 쓸수 있는 명령어들.
-					sendMessage("게임 가입을 먼저 하십시오");
+					sendMessage(e.getChannel(), "게임 가입을 먼저 하십시오");
 					return;
 				}
-				if (args[1].equalsIgnoreCase("내정보")) {
-					sendEmbed(new embedBuilder().myGameInfo(RFIF, args[1]));
-				} else if (args[1].equalsIgnoreCase("무기목록")) {
-					sendEmbed(new embedBuilder().myGameInfo(RFIF, args[1]));
-				} else if (args[1].equalsIgnoreCase("탈퇴")) {
-					sendMessage("강화게임에 탈퇴 하셨습니다. 가입을 다시 원하시면 \"강화 가입\"를 입력해주십시오.");
-					RFG.deleteAccount(AuthorName.getName());
+				if (args.length == 2) {// 명령어 길이가 2단어 인것들
+					if (args[1].equalsIgnoreCase("내정보")) {
+						sendEmbed(e.getChannel(), new embedBuilder().myGameInfo(RFIF, args[1]));
+					} else if (args[1].equalsIgnoreCase("내무기")) {
+						sendEmbed(e.getChannel(), new embedBuilder().myGameInfo(RFIF, args[1]));
+					}
 				}
-				if (args.length > 2) {// 무기 이름을 입력해야 하는 정보들
-					StringBuilder weaponname = new StringBuilder();
+				if (args.length > 2) {// 명령어 길이가 3단어 이상인것들
+					StringBuilder name = new StringBuilder();
 					for (int i = 2; i < args.length; i++) {
 						if (i == args.length - 1)
-							weaponname.append(args[i]);
+							name.append(args[i]);
 						else
-							weaponname.append(args[i] + " ");
+							name.append(args[i] + " ");
 					}
 					if (args[1].equalsIgnoreCase("획득")) {
-						RFIF.giveItem("Common", weaponname.toString(), 0, 1000);
+						if (StaticFile.gameSystemInfo.findWeapon(name.toString()) != null)
+							RFIF.giveItem(name.toString());
+						else
+							sendMessage(e.getChannel(), "도감에 없는 장비 입니다.");
 						return;
 					} else if (args[1].equalsIgnoreCase("돈")) {
 						try {
-							RFIF.setMoney(RFIF.getMoney() + Integer.parseInt(weaponname.toString()));
+							RFIF.setMoney(RFIF.getMoney() + Integer.parseInt(name.toString()));
 						} catch (Exception es) {
-							sendMessage("숫자를 입력해주십시오");
+							sendMessage(e.getChannel(), "숫자를 입력해주십시오");
 						}
 					}
-					weapon = RFIF.getWeapon(weaponname.toString());
+					weapon = RFIF.getWeapon(name.toString());
 					if (args[1].equalsIgnoreCase("도전")) {
 						int does = IsDoing(e.getChannel().getName());
 						if (does == 1) {
-							sendMessage("누군가 강화를 시도 하고있습니다. 지켜봐주세요");
+							sendMessage(e.getChannel(), "누군가 강화를 시도 하고있습니다. 지켜봐주세요");
 							return;
 						}
 						if (weapon == null) {
-							sendMessage("뒤 강화수");
+							sendMessage(e.getChannel(), "무기 이름을 다시 확인해주십시오.");
 							return;
 						}
 						if (RFIF.getMoney() >= weapon.getCost()) {
 							isDoing.replace(e.getChannel().getName(), 1);
+							RFG.setReinforceName(e.getAuthor());
 							String description = "강화시 " + (weapon.getUpgraded() + 1) + "성이 됩니다.\n" + weapon.getCost()
 									+ "원 소모\n" + "성공확률:" + RFG.sucessPercentage[weapon.getUpgraded()] + "%\n" + "실패확률:"
 									+ (100 - (RFG.destroyPercentage[weapon.getUpgraded()]
 											+ RFG.sucessPercentage[weapon.getUpgraded()]))
 									+ "%\n" + "파괴확률:" + RFG.destroyPercentage[weapon.getUpgraded()] + "%";
-							ch.sendMessage(new embedBuilder()
+							e.getChannel().sendMessage(new embedBuilder()
 									.showQuestionBox(weapon.getUpgraded() + "성 입니다 강화 하시겠습니까?", description).build())
 									.queue(message -> {
 										message.addReaction("✔️").queue();
@@ -113,8 +112,9 @@ public class Listener extends ListenerAdapter {
 
 										for (int i = 15; i > -1; i--) {
 											message.editMessage(new embedBuilder()
-													.showQuestionBox(weapon.getUpgraded() + "성 입니다 강화 하시겠습니까?", description + "\n" + i + "초 후 삭제")
-													.build()).queueAfter(1, TimeUnit.SECONDS);
+													.showQuestionBox(weapon.getUpgraded() + "성 입니다 강화 하시겠습니까?",
+															description + "\n" + i + "초 후 삭제")
+													.build()).submitAfter(1, TimeUnit.SECONDS);
 											try {
 												TimeUnit.SECONDS.sleep(1);
 											} catch (InterruptedException e1) {
@@ -122,45 +122,48 @@ public class Listener extends ListenerAdapter {
 												e1.printStackTrace();
 											}
 										}
-										message.delete().queue();
-										isDoing.replace(e.getChannel().getName(), 0);
+										message.delete().submit();
 									});
+							isDoing.replace(e.getChannel().getName(), 0);
 						} else {
-							sendMessage("강화에 필요한 돈이 부족합니다.");
+							sendMessage(e.getChannel(), "강화에 필요한 돈이 부족합니다.");
 						}
 					} else if (args[1].equalsIgnoreCase("판매")) {
 						if (weapon.getUpgraded() == 0) {
-							sendMessage("어딜 날로 먹을라고.");
+							sendMessage(e.getChannel(), "어딜 날로 먹을라고.");
 							return;
 						}
 						RFG.sellOrDestroy(weapon);
-						sendMessage(weapon.getUpgraded() * 100000 + "원입니다.\n현재 돈은 " + RFIF.getMoney() + "원 입니다.");
+						sendMessage(e.getChannel(),
+								weapon.getUpgraded() * 100000 + "원입니다.\n현재 돈은 " + RFIF.getMoney() + "원 입니다.");
 					} else if (args[1].equalsIgnoreCase("내무기")) {
-						sendEmbed(new embedBuilder().showWeaponInfo(RFIF, weapon));
-					} else if (args[1].equalsIgnoreCase("착용")) {
+						if(RFIF.getWeapon(args[2]) == null) {
+							sendMessage(e.getChannel(), "가지고 계신 무기가 아닙니다.");
+							return;
+						}
+						sendEmbed(e.getChannel(), new embedBuilder().showWeaponInfo(RFIF, weapon));
+					} else if (args[1].equalsIgnoreCase("착용") || args[1].equalsIgnoreCase("장착")) {
 						if (weapon == null) {
-							sendMessage("없는 장비 입니다. 뒤 강화수를 입력하셨는지 무기이름은 제대로 됐는지 확인해주세요.");
-						} else if (weapon.equals(RFIF.getequipedWeapon())) {
-							sendMessage("이미 착용중인 장비 입니다.");
+							sendMessage(e.getChannel(), "없는 장비 입니다. 뒤 강화수를 입력하셨는지 무기이름은 제대로 됐는지 확인해주세요.");
+						} else if (weapon.equals(RFIF.getEquipedWeapon())) {
+							sendMessage(e.getChannel(), "이미 착용중인 장비 입니다.");
 						} else {
 							RFIF.equipWeapon(weapon);
-							sendMessage("장비 " + weapon.getProperName() + " 착용되었습니다.");
+							sendMessage(e.getChannel(), "장비 " + weapon.getProperName() + " 착용되었습니다.");
 						}
-					} else if (args[1].equalsIgnoreCase("착용해제")) {
+					} else if (args[1].equalsIgnoreCase("착용해제") || args[1].equalsIgnoreCase("장착해제")) {
 						if (weapon == null) {
-							sendMessage("없는 장비 입니다. 뒤 강화수를 입력하셨는지 무기이름은 제대로 됐는지 확인해주세요.");
-						} else if (RFIF.getequipedWeapon() == null) {
-							sendMessage("장착중인 장비가 없습니다.");
+							sendMessage(e.getChannel(), "없는 장비 입니다. 뒤 강화수를 입력하셨는지 무기이름은 제대로 됐는지 확인해주세요.");
+						} else if (RFIF.getEquipedWeapon() == null) {
+							sendMessage(e.getChannel(), "장착중인 장비가 없습니다.");
 						} else {
 							RFIF.disarmWeapon(weapon);
-							;
-							sendMessage("장비 " + weapon.getProperName() + " 착용해제되었습니다.");
+							sendMessage(e.getChannel(), "장비 " + weapon.getProperName() + " 착용해제되었습니다.");
 						}
 					}
 				}
 			}
 		}
-
 	}
 
 	public int IsDoing(String msg) {
@@ -182,35 +185,27 @@ public class Listener extends ListenerAdapter {
 //		}
 //		if (emotionsName.contains("✔️") && emotionsName.contains("❌")) {
 		if (e.getReactionEmote().getName().equals("✔️") && !e.getMember().getUser().equals(e.getJDA().getSelfUser())) {
-			if (e.getMember().getUser().equals(AuthorName)) {
-				sendMessage(RFG.upgradeWeapon(weapon));
+			if (e.getMember().getUser().equals(RFG.getReinforceName())) {
+				sendMessage(e.getChannel(), RFG.upgradeWeapon(weapon));
 				isDoing.replace(e.getChannel().getName(), 0);
 				e.getChannel().retrieveMessageById(e.getMessageId()).complete().delete().queue();
 			}
 		} else if (e.getReactionEmote().getName().equals("❌")
 				&& !e.getMember().getUser().equals(e.getJDA().getSelfUser())) {
-			if (e.getMember().getUser().equals(AuthorName)) {
+			if (e.getMember().getUser().equals(RFG.getReinforceName())) {
 				isDoing.replace(e.getChannel().getName(), 0);
-				sendMessage("강화를 취소 하셨습니다");
+				sendMessage(e.getChannel(), "강화를 취소 하셨습니다");
 				e.getChannel().retrieveMessageById(e.getMessageId()).complete().delete().queue();
 			}
 		}
 	}
 //	}
 
-	private void sendNDeleteMessage(String msg, int second) {
-		ch.sendMessage(msg).queue(message -> message.delete().queueAfter(second, TimeUnit.SECONDS));
-	}
-
-	private void sendMessage(String msg) {
+	private void sendMessage(MessageChannel ch, String msg) {
 		ch.sendMessage(msg).queue();
 	}
 
-	private void sendEmbed(EmbedBuilder msg) {
+	private void sendEmbed(MessageChannel ch, EmbedBuilder msg) {
 		ch.sendMessage(msg.build()).queue();
-	}
-
-	private void deleteMessage(Message msg) {
-		msg.delete().queue();
 	}
 }
