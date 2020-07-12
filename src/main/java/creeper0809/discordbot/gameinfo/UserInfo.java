@@ -64,7 +64,8 @@ public class UserInfo {
 		this.criticalDamage -=weaponinfo.getCriticalDamage();
 	}
 	public void giveItem(String weaponName) {
-		inventory.add(StaticFile.gameSystemInfo.findWeapon(weaponName));
+		WeaponInfo weaponinfo = StaticFile.gameSystemInfo.findWeapon(weaponName);
+		inventory.add(new WeaponInfo(weaponinfo.getQuality(),weaponinfo.getWeaponName(),weaponinfo.getUpgraded(),weaponinfo.getCost()));
 	}
 
 	public void removeItem(WeaponInfo weaponName) {
