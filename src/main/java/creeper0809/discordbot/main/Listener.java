@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.react.PrivateMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class Listener extends ListenerAdapter {
+public class Listener extends ListenerAdapter implements Runnable {
 	// .queue() 가장 기본적인 작업후 호출 방법 호출 할 대상이 없으면 오류 발생
 	// .submit() 더 이상 필요하지 않은 경우 실행을 취소해야 하는 경우
 
@@ -40,23 +40,6 @@ public class Listener extends ListenerAdapter {
 				RFG.addInfo(e.getAuthor().getName());
 				UserInfo RFIF = RFG.getRFIF();
 				noticechannel = e.getChannel();
-				if (args[1].equalsIgnoreCase("가입")) {
-					if (RFIF == null) {
-						sendMessage(e.getChannel(), "강화게임에 참여 하셨습니다. 탈퇴를 원하시면 강화 탈퇴 를입력해주십시오.");
-						upgradeWeapon.put(e.getAuthor().getName(), null);
-						StaticFile.gameSystemInfo.addAccount(AuthorName.getName());
-					} else {
-						sendMessage(e.getChannel(), "이미 가입되셨습니다.");
-					}
-					return;
-				} else if (args[1].equalsIgnoreCase("도움") || args[1].equalsIgnoreCase("도움말")) {
-					sendEmbed(e.getChannel(), new embedBuilder().showHelpBox());
-					return;
-				}
-				if (RFIF == null) {// 이걸 기준으로 가입해야만 쓸수 있는 명령어들.
-					sendMessage(e.getChannel(), "게임 가입을 먼저 하십시오");
-					return;
-				}
 				System.out.println(RFIF.getUserName());
 				if (args.length == 2) {
 					// 명령어 길이가 2단어 인것들
@@ -201,5 +184,11 @@ public class Listener extends ListenerAdapter {
 
 	private void sendEmbed(MessageChannel ch, EmbedBuilder msg) {
 		ch.sendMessage(msg.build()).queue();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }

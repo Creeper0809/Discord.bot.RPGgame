@@ -5,6 +5,11 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
+import com.jagrosh.jdautilities.command.CommandClientBuilder;
+
+import creeper0809.discordbot.chosungquiz.ChoSungGameListener;
+import creeper0809.discordbot.commands.AddAccount;
+import creeper0809.discordbot.commands.SayHelp;
 import creeper0809.discordbot.gameinfo.GameSystemInfo;
 import creeper0809.discordbot.gameinfo.StaticFile;
 import net.dv8tion.jda.api.AccountType;
@@ -21,10 +26,18 @@ public class Main {
 		FileInputStream file = new FileInputStream("C:\\Users\\js.lim\\Desktop\\resource\\token.txt");
 		byte[] readBuffer = new byte[file.available()];
 		while(file.read(readBuffer)!= -1) {}
+		CommandClientBuilder cb = new CommandClientBuilder();
+		cb.setPrefix("]강화 ");
+		cb.setHelpWord("help me");
+		cb.setOwnerId("728850310834946158");
+		cb.setStatus(OnlineStatus.ONLINE);
+		cb.addCommand(new SayHelp());
+		cb.addCommand(new AddAccount());
 		jb.setAutoReconnect(true);
-		jb.setStatus(OnlineStatus.ONLINE);
 		jb.setToken(new String(readBuffer));
 		jb.addEventListeners(new Listener());
+		jb.addEventListeners(cb.build());
+		jb.addEventListeners(new ChoSungGameListener());
 		try {
 			jda = jb.build();
 		} catch (LoginException e) {
