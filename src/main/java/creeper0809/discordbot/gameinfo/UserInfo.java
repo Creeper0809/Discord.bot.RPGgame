@@ -3,6 +3,7 @@ package creeper0809.discordbot.gameinfo;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import creeper0809.discordbot.objects.Constants;
 import lombok.*;
 
 public class UserInfo {
@@ -29,7 +30,8 @@ public class UserInfo {
 	private ArrayList<WeaponInfo> inventory = new ArrayList<WeaponInfo>();
 	@Getter @Setter
 	private String stage;
-
+	@Getter @Setter
+	private WeaponInfo upgradingWeaponName;
 	public UserInfo(String userName) {
 		this.userName = userName;
 		money = 5000;
@@ -64,7 +66,7 @@ public class UserInfo {
 		this.criticalDamage -=weaponinfo.getCriticalDamage();
 	}
 	public void giveItem(String weaponName) {
-		WeaponInfo weaponinfo = StaticFile.gameSystemInfo.findWeapon(weaponName);
+		WeaponInfo weaponinfo = Constants.GAMESYSTEMINFO.findWeapon(weaponName);
 		inventory.add(new WeaponInfo(weaponinfo.getQuality(),weaponinfo.getWeaponName(),weaponinfo.getUpgraded(),weaponinfo.getCost()));
 	}
 

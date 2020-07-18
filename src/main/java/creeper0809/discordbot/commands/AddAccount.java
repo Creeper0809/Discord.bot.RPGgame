@@ -3,7 +3,7 @@ package creeper0809.discordbot.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
-import creeper0809.discordbot.gameinfo.StaticFile;
+import creeper0809.discordbot.objects.Constants;
 
 public class AddAccount extends Command{
 	public AddAccount() {
@@ -13,8 +13,8 @@ public class AddAccount extends Command{
 	}
 	@Override
 	protected void execute(CommandEvent e) {
-		if(StaticFile.gameSystemInfo.findUser(e.getAuthor().getName()) == null) {
-			StaticFile.gameSystemInfo.addAccount(e.getAuthor().getName());
+		if(Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName()) == null) {
+			Constants.GAMESYSTEMINFO.addAccount(e.getAuthor().getName());
 			e.reply("가입되셨습니다");
 		}
 		else {

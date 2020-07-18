@@ -8,9 +8,9 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 
-public class SayHelp extends Command {
+public class ShowHelp extends Command {
 
-	public SayHelp() {
+	public ShowHelp() {
 		super.name = "도움말";
 		super.aliases = new String[] { "도움", "도움말" };
 		super.help = "도움말 표시";

@@ -50,5 +50,10 @@
 			<version>1.18.12</version>
 
 		</dependency>
+		<dependency>
+			<groupId>me.duncte123</groupId>
+			<artifactId>botCommons</artifactId>
+			<version>1.0.88</version>
+		</dependency>
 	</dependencies>
 </project>
