@@ -3,10 +3,10 @@ package creeper0809.discordbot.objects;
 import creeper0809.discordbot.GameInfo;
 
 public class Constants {
-	public static final GameInfo GAMESYSTEMINFO = new GameInfo();
+	public static final GameInfo GAMEINFO = new GameInfo();
 	public static final String PREFIX = "]";
 	public static final String OWNERID = "725002757290852432";
-	public static final String TOKEN = "NzI4ODUwMzEwODM0OTQ2MTU4.XxMSCQ.huXd3siOrKxaSbiSw2DMg4Rgzxk";
+	public static final String TOKEN = "NzI4ODUwMzEwODM0OTQ2MTU4.XwAYvw.gf8u7IczLN8Fj-0MOJsoGwuETGY";
 	public static final String CHENNLID = "728889866577903617";
 	public static final int[] sucessPercentage = { 95, 90, 85, 85, 80, 75, 70, 65, 60, 55, 45, 35, 30, 30, 30, 30, 30, 30, 30, 30,
 			30, 30, 3, 2, 1 };

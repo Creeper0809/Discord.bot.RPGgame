@@ -13,7 +13,7 @@ public class EquipWeapon implements ICommand {
 
 	@Override
 	public void handle(String args, MessageReceivedEvent e) {
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(e.getAuthor().getName());
 		if (userinfo.getEquipedWeapon() != null) {
 			e.getChannel().sendMessage("이미 착용중인 장비가 있습니다").queue();
 			return;

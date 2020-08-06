@@ -13,8 +13,8 @@ public class AddAccount extends Command{
 	}
 	@Override
 	protected void execute(CommandEvent e) {
-		if(Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName()) == null) {
-			Constants.GAMESYSTEMINFO.addAccount(e.getAuthor().getName());
+		if(Constants.GAMEINFO.findUser(e.getAuthor().getName()) == null) {
+			Constants.GAMEINFO.addAccount(e.getAuthor().getName());
 			e.reply("가입되셨습니다");
 		}
 		else {

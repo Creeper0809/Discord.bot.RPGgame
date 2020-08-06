@@ -17,15 +17,15 @@ public class ReactionListener extends ListenerAdapter {
 		if (e.getReactionEmote().getName().equals("✔️") && !e.getUser().equals(e.getJDA().getSelfUser())) {
 			e.getChannel().retrieveMessageById(e.getMessageId()).complete().delete().queue();
 			upgradeWeapon(e);
-			Constants.GAMESYSTEMINFO.findUser(e.getUser().getName()).setUpgradingWeaponName(null);
+			Constants.GAMEINFO.findUser(e.getUser().getName()).setUpgradingWeaponName(null);
 		} else if (e.getReactionEmote().getName().equals("❌") && !e.getUser().equals(e.getJDA().getSelfUser())) {
 			e.getChannel().retrieveMessageById(e.getMessageId()).complete().delete().queue();
-			Constants.GAMESYSTEMINFO.findUser(e.getUser().getName()).setUpgradingWeaponName(null);
+			Constants.GAMEINFO.findUser(e.getUser().getName()).setUpgradingWeaponName(null);
 		}
 	}
 
 	public void upgradeWeapon(PrivateMessageReactionAddEvent e) {
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(e.getUser().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(e.getUser().getName());
 		WeaponInfo weaponinfo = userinfo.getUpgradingWeaponName();
 		userinfo.setMoney(userinfo.getMoney() - weaponinfo.getCost());
 		if (userinfo.getUpgradeFailed() == 2) {

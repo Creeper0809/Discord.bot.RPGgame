@@ -55,7 +55,7 @@ public class CommandManager {
 				else
 					weaponName.append(args.get(i) + " ");
 			}
-			if(Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName()) == null) {
+			if(Constants.GAMEINFO.findUser(e.getAuthor().getName()) == null) {
 				e.getChannel().sendMessage("게임 가입부터 하십시오.").queue();
 				return;
 			}

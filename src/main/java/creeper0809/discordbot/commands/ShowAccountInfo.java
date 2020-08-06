@@ -16,11 +16,11 @@ public class ShowAccountInfo extends Command {
 
 	@Override
 	protected void execute(CommandEvent event) {
-		if (Constants.GAMESYSTEMINFO.findUser(event.getAuthor().getName()) == null) {
+		if (Constants.GAMEINFO.findUser(event.getAuthor().getName()) == null) {
 			event.reply("가입을 먼저 해주십시오");
 			return;
 		}
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(event.getAuthor().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(event.getAuthor().getName());
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setColor(userinfo.getBackgroundColor());
 		eb.setTitle(userinfo.getUserName() + "님의 정보", null);

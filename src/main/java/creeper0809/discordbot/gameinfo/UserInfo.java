@@ -68,7 +68,7 @@ public class UserInfo {
 		this.criticalDamage -=weaponinfo.getCriticalDamage();
 	}
 	public void giveItem(String weaponName){
-		WeaponInfo weaponinfo = Constants.GAMESYSTEMINFO.findWeapon(weaponName);
+		WeaponInfo weaponinfo = Constants.GAMEINFO.findWeapon(weaponName);
 		inventory.add(weaponinfo.clone());
 	}
 

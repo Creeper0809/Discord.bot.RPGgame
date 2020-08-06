@@ -13,7 +13,7 @@ public class SellWeapon implements ICommand {
 
 	@Override
 	public void handle(String args, MessageReceivedEvent e) {
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(e.getAuthor().getName());
 		WeaponInfo weaponInfo = userinfo.getWeapon(args);
 		userinfo.setMoney(userinfo.getMoney() + 10000 * weaponInfo.getUpgraded());
 		e.getChannel().sendMessage(weaponInfo.getProperName()+"가 팔려 소지하고 계신 돈이"+userinfo.getMoney()+"원이 되었습니다").queue();

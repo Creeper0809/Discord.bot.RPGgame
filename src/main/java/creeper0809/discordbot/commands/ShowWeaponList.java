@@ -17,14 +17,14 @@ public class ShowWeaponList extends Command{
 	}
 	@Override
 	protected void execute(CommandEvent event) {
-		if(Constants.GAMESYSTEMINFO.findUser(event.getAuthor().getName()) == null) {
+		if(Constants.GAMEINFO.findUser(event.getAuthor().getName()) == null) {
 			event.reply("게임 가입을 먼저 하십시오");
 			return;
 		}
 		String[] msg = event.getMessage().getContentRaw().substring(1).split(" ");
 		if(msg.length > 2) return;
 		EmbedBuilder eb = new EmbedBuilder();
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(event.getAuthor().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(event.getAuthor().getName());
 		StringBuilder description = new StringBuilder();
 		for (int i = 1; i < userinfo.getInventory().size() + 1; i++) {
 			if (userinfo.getInventory().get(i - 1).getUpgraded() == 0) {

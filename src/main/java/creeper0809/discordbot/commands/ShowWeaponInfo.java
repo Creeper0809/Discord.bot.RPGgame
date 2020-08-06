@@ -16,7 +16,7 @@ public class ShowWeaponInfo implements ICommand {
 	public void handle(String args, MessageReceivedEvent e) {
 		if (args.isEmpty())
 			return;
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(e.getAuthor().getName());
 		WeaponInfo weapon = userinfo.getWeapon(args);
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle(userinfo.getUserName() + "님의 " + weapon.getProperName());

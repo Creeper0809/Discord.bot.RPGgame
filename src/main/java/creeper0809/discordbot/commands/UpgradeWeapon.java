@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.events.message.priv.react.PrivateMessageReactionAddEv
 public class UpgradeWeapon implements ICommand {
 	@Override
 	public void handle(String args, MessageReceivedEvent e) {
-		UserInfo userinfo = Constants.GAMESYSTEMINFO.findUser(e.getAuthor().getName());
+		UserInfo userinfo = Constants.GAMEINFO.findUser(e.getAuthor().getName());
 		if (userinfo.getUpgradingWeaponName() != null) {
 			e.getChannel().sendMessage("이미 강화가 진행중입니다").queue();
 			return;
