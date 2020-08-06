@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import creeper0809.discordbot.commands.DisarmWeapon;
 import creeper0809.discordbot.commands.EquipWeapon;
 import creeper0809.discordbot.commands.SellWeapon;
+import creeper0809.discordbot.commands.ShowWeaponInfo;
 import creeper0809.discordbot.commands.UpgradeWeapon;
 import creeper0809.discordbot.objects.Constants;
 import creeper0809.discordbot.objects.ICommand;
@@ -22,6 +23,7 @@ public class CommandManager {
 		addCommand(new DisarmWeapon());
 		addCommand(new SellWeapon());
 		addCommand(new UpgradeWeapon());
+		addCommand(new ShowWeaponInfo()); 
 	}
 	private void addCommand(ICommand command) {
 		boolean hasCommand = this.commands.stream().anyMatch((it)->it.getInvoke().equalsIgnoreCase(command.getInvoke()));

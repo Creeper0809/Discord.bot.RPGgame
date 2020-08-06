@@ -55,12 +55,12 @@ public class UpgradeWeapon implements ICommand {
 	@Override
 	public String getInvoke() {
 		// TODO Auto-generated method stub
-		return "도전";
+		return "강화도전";
 	}
 
 	@Override
 	public List<String> getAliases() {
 		// TODO Auto-generated method stub
-		return Arrays.asList("도전");
+		return Arrays.asList("강화도전");
 	}
 }

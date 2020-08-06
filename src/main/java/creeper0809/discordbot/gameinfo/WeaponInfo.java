@@ -3,7 +3,7 @@ package creeper0809.discordbot.gameinfo;
 import lombok.Getter;
 import lombok.Setter;
 
-public class WeaponInfo {
+public class WeaponInfo implements Cloneable{
 	@Getter
 	private String weaponName;
 	@Getter
@@ -11,8 +11,6 @@ public class WeaponInfo {
 	private String properName;
 	@Getter
 	private String quality;
-	@Getter
-	private int id;
 	@Getter
 	@Setter
 	private int upgraded;
@@ -42,6 +40,16 @@ public class WeaponInfo {
 		damage = 10;
 		criticalPer = 40;
 		criticalDamage = 30;
+	}
+	public WeaponInfo clone() {
+		WeaponInfo info = null;
+		try {
+			info = (WeaponInfo) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return info;
 	}
 
 }
